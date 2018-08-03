@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>WebGL 3D Model Viewer Using three.js</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <script src="src/three.js"></script>
+    <script src="src/Detector.js"></script>
+    <script src="src/OrbitControls.js"></script>
+    <script src="src/OBJLoader.js"></script>
+    <script src="src/MTLLoader.js"></script>
+
+    <style>
+    * {
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+		.close{
+		    position: relative;
+			margin-right: -15px;
+			margin-top: -25px;
+		}
+
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .left,
+        .right {
+            position: absolute;
+            color: #fff;
+            font-family: Geneva, sans-serif;
+        }
+
+        .left {
+            bottom: 1em;
+            left: 1em;
+            text-align: left;
+        }
+
+        .right {
+            top: 0;
+            right: 0;
+            text-align: right;
+        }
+
+        a {
+            color: #f58231;
+        }
+ 
+        .modal {
+            
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            width: 50%; /* Could be more or less, depending on screen size */
+			border-radius: 5px;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+ 
+        /* Modal Header */
+        .modal-header {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+        }
+        /* Modal Footer */
+        .modal-footer {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+        }
+        
+        .overlay {
+	  position: fixed;
+	  top: 0;
+	  bottom: 0;
+	  left: 0;
+	  right: 0;
+	  background: rgba(0, 0, 0, 0.7);
+	  transition: opacity 500ms;
+	  visibility: hidden;
+	  opacity: 0;
+}
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup {
+  margin: 70px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 30%;
+  position: relative;
+  transition: all 5s ease-in-out;
+}
+
+.popup h2 {
+  margin-top: 0;
+  color: #333;
+  font-family: Tahoma, Arial, sans-serif;
+}
+.popup .close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+.popup .close:hover {
+  color: #06D85F;
+}
+.popup .content {
+  max-height: 30%;
+  overflow: auto;
+}
+
+@media screen and (max-width: 700px){
+  .box{
+    width: 70%;
+  }
+  .popup{
+    width: 70%;
+  }
+}
+#text-content{
+    padding: 10px;
+    font-size: 2vh;
+}
+.tooltip {    
+    position: absolute;
+    background: black;
+    border-radius:4px;
+    padding: 6px 12px;
+    font-family: arial;
+    font-size: 18px;
+    text-shadow: 0px 1px 1px #000;
+    max-width: 200px;
+    color: white;
+  }
+  /*
+  .tooltip:before {
+    content : " ";
+    width: 10;
+    height: 10;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #646464;
+    position:absolute;
+    bottom:-5px;
+    left:5px;
+  }*/
+    </style>
+</head>
+<body>
+    <div id="tooltip" class="tooltip" style="display:none"></div>
+    <div id="cameraValue" class="tooltip" style="display:none"></div>
+    <script src="src/tween.min.js"></script>
+    <script src="src/config.js"></script>
+    <script src="src/script.js"></script>
+</body>
+</html>
