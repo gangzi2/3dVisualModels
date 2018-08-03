@@ -164,7 +164,7 @@
 		backLight = new THREE.DirectionalLight(0xffffff, 0.8);
 		backLight.position.set(0, -200, 0).normalize();
 
-		var spotLight = new THREE.SpotLight( 0xffffff );
+		var spotLight = new THREE.SpotLight( 0x666666 );
 		spotLight.position.set( 100, 1000, 100 );
 		
 		spotLight.castShadow = true;
@@ -193,21 +193,15 @@
 
 
 		var mtlLoader = new THREE.MTLLoader();
-		mtlLoader.setBaseUrl('assets/');
-		mtlLoader.setPath('assets/');
-		mtlLoader.load('final2.mtl', function (materials) {
+		mtlLoader.setBaseUrl('assets/example/');
+		mtlLoader.setPath('assets/example/');
+		mtlLoader.load('forklift.mtl', function (materials) {
 			materials.preload();
 			var objLoader = new THREE.OBJLoader();
 			objLoader.setMaterials(materials);
-			objLoader.setPath('assets/');
-			objLoader.load('final2.obj', function (object) {
-				object.traverse(function (node) {
-					if (node.material) {
-						node.material.side = THREE.DoubleSide;
-					}
-				});
+			objLoader.setPath('assets/example/');
+			objLoader.load('forklift.obj', function (object) {
 				scene.add(object);
-
 			});
 
 		});

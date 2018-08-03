@@ -20,7 +20,7 @@ var configIcons = [
 		id: "3",
 		messagePopup: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. ",
 		size: 0.5,
-		position: { x: 1, y: 0, z: 1 },
-		cameraPosition: new THREE.Vector3(2, 2, 2)
+		position: { x: 1, y:5, z: 1 },
+		cameraPosition: new THREE.Vector3(2.5, 6.8, -1.2)
 	}
 ];
