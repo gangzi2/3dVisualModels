@@ -112,9 +112,8 @@
 	}
 	function updateSprite(objects){
 		var scaleVector = new THREE.Vector3();
-		var scaleFactor = 15;
 		objects.forEach(function(sprite){
-			var scale = scaleVector.subVectors(sprite.position, camera.position).length() / scaleFactor;
+			var scale = scaleVector.subVectors(sprite.position, camera.position).length() / global.zoomIcon;
 			sprite.scale.set(scale, scale, 1); 
 		})
 		
@@ -141,7 +140,9 @@
 
 		camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
 		camera.position.z = 10;
-
+        if(global.departPositionCamera){
+			camera.position.copy(global.departPositionCamera);
+		}
 		/* Scene */
 		objects = [];
 		scene = new THREE.Scene();
@@ -193,14 +194,14 @@
 
 
 		var mtlLoader = new THREE.MTLLoader();
-		mtlLoader.setBaseUrl('assets/example/');
-		mtlLoader.setPath('assets/example/');
-		mtlLoader.load('forklift.mtl', function (materials) {
+		mtlLoader.setBaseUrl(global.objectPath);
+		mtlLoader.setPath(global.objectPath);
+		mtlLoader.load(global.objectName +'.mtl', function (materials) {
 			materials.preload();
 			var objLoader = new THREE.OBJLoader();
 			objLoader.setMaterials(materials);
-			objLoader.setPath('assets/example/');
-			objLoader.load('forklift.obj', function (object) {
+			objLoader.setPath(global.objectPath);
+			objLoader.load(global.objectName +'.obj', function (object) {
 				scene.add(object);
 			});
 
