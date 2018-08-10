@@ -1,5 +1,4 @@
  
-(function () {
 
 	if (!Detector.webgl) {
 		Detector.addGetWebGLMessage();
@@ -12,17 +11,45 @@
 	var raycaster = new THREE.Raycaster();
 	var mouse = new THREE.Vector2();
 
-	var fitCameraToObject = function (camera, object, offset, controls,callback) {
-
+	function fitCameraToObject(camera, object, offset, controls,callback) {
+		
 		offset = offset || 1.25;
-
+        console.log(controls.target);
 		var boundingBox = new THREE.Box3();
+        if(!object) {
+			new TWEEN.Tween( controls.target)
+			.to( { x:global.departTargetCamera.x,  y:global.departTargetCamera.y, z: global.departTargetCamera.z}, 1000 )
+			.onUpdate(function(){
+			 //camera.position.set(this.x, this.y, this.z);
+			 //camera.lookAt(controls.target);
+			})
+			.easing( TWEEN.Easing.Linear.None)
+			.onComplete(function () {
+			 //controls.target.copy(object.position);
+			// camera.lookAt(controls.target);
+			 
+			  })
+			.start();   
 
-		camera.updateProjectionMatrix();
-		if (controls) {
+			new TWEEN.Tween( controls.object.position)
+			.to( { x:global.departPositionCamera.x,  y:global.departPositionCamera.y, z: global.departPositionCamera.z }, 1000 )
+			.onUpdate(function() {
+			//camera.position.set(this.x, this.y, this.z);
+				 //camera.lookAt(controls.target);
+			})
+			.easing( TWEEN.Easing.Linear.None)
+			.onComplete(function () {
+			//controls.target.copy(object.position);
+			 //camera.lookAt(controls.target);
+ 
+				})
+			.start();  
+		}
+		else{
+			camera.updateProjectionMatrix();
 			new TWEEN.Tween( controls.target)
 			.to( { x:object.position.x,  y:object.position.y, z: object.position.z }, 1000 )
-			.onUpdate(()=> {
+			.onUpdate(function() {
 			 //camera.position.set(this.x, this.y, this.z);
 			 camera.lookAt(object.position);
 			})
@@ -36,7 +63,7 @@
 
 			new TWEEN.Tween( controls.object.position)
 			.to( { x:object.userdata.cameraPosition.x,  y: object.userdata.cameraPosition.y, z: object.userdata.cameraPosition.z }, 1000 )
-			.onUpdate(()=> {
+			.onUpdate(function(){
 			//camera.position.set(this.x, this.y, this.z);
 			camera.lookAt(object.position);
 			})
@@ -49,6 +76,7 @@
 			.start();   
 	 
 		}
+	 
 	}
 
 	function makeTextSprite(parameters) {
@@ -222,7 +250,7 @@
 		controls.enableDamping = true;
 		controls.dampingFactor = 0.25;
 		controls.enableZoom = true;
-
+        controls.target.copy(global.departTargetCamera);
 		/* Events */
 
 		window.addEventListener('resize', onWindowResize, false);
@@ -405,6 +433,18 @@
 				INTERSECTED.currentHex = INTERSECTED.material.color.getHex();
 				INTERSECTED.material.color.setHex(0xff0000);
 				document.getElementsByTagName("body")[0].style.cursor = "pointer";
+				
+				var proj = toScreenPosition(INTERSECTED, camera);
+
+				var tooltipWrap = document.getElementById("tooltip"); //get div
+				tooltipWrap.style.display = "block";
+
+				if (tooltipWrap.firstChild) {
+					tooltipWrap.removeChild(tooltipWrap.firstChild);
+				}
+				tooltipWrap.appendChild(document.createTextNode(intersects[0].object.userdata.messagePopup));
+				tooltipWrap.style.left = proj.x+5 + 'px';
+				tooltipWrap.style.top = proj.y +5+ 'px';
 			}
 
 		}
@@ -419,4 +459,4 @@
 	window.addEventListener('mousemove', onMouseMove, false);
 
 	window.requestAnimationFrame(render);
-})();
+ 

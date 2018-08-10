@@ -1,7 +1,8 @@
 
 var global = {
 	camera: true,
-	departPositionCamera:new THREE.Vector3(0.9, 5, -15),
+	departPositionCamera:new THREE.Vector3(15, 2.0, 2.36),
+	departTargetCamera:new THREE.Vector3(0, 1, 0),
 	zoomIcon: 25,
 	objectPath:'assets/example/',
 	objectName:'forklift'
