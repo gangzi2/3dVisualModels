@@ -415,6 +415,8 @@
 					if (tooltipWrap.firstChild) {
 						tooltipWrap.removeChild(tooltipWrap.firstChild);
 					}
+					id = intersects[0].object.userdata.id; 
+					updatePopupid();
 					tooltipWrap.appendChild(document.createTextNode(intersects[0].object.userdata.messagePopup));
 					tooltipWrap.style.left = proj.x+5 + 'px';
 					tooltipWrap.style.top = proj.y +5+ 'px';
