@@ -5,16 +5,66 @@
 	}
 	var container;
 
-	var camera, controls, scene, renderer, INTERSECTED;
+	var camera, controls, scene, renderer, INTERSECTED, id=1;
 	var lighting, ambient, keyLight, fillLight, backLight, INTERSECTED;
 
 	var raycaster = new THREE.Raycaster();
 	var mouse = new THREE.Vector2();
 
-	function fitCameraToObject(camera, object, offset, controls,callback) {
+	function updatePopupid(){
+		var textWrap = document.getElementById("popupid"); //get div
+		if (textWrap.firstChild) {
+			textWrap.removeChild(textWrap.firstChild);
+		}
+		textWrap.appendChild(document.createTextNode(id));
+	}
+
+	var callback2 = function(previousIcon){
+		var object = (previousIcon)?configIcons[id-1]:configIcons[id];
+
+		var vector = new THREE.Vector3();
+
+		var widthHalf = 0.5 * renderer.context.canvas.width;
+		var heightHalf = 0.5 * renderer.context.canvas.height;
+
+		var pos =  new THREE.Vector3(object.position.x, object.position.y, object.position.z);
+		pos.project(camera);
+		pos.x = ( pos.x * widthHalf ) + widthHalf;
+		pos.y = - ( pos.y * heightHalf ) + heightHalf;
+ 
+		var tooltipWrap = document.getElementById("tooltip"); //get div
+		tooltipWrap.style.display = "block";
+
+		if (tooltipWrap.firstChild) {
+			tooltipWrap.removeChild(tooltipWrap.firstChild);
+		}
+		tooltipWrap.appendChild(document.createTextNode(object.messagePopup));
+		tooltipWrap.style.left = pos.x+5 + 'px';
+		tooltipWrap.style.top = pos.y +5+ 'px';
+		var textWrap = document.getElementById("popupid"); //get div
+		if (textWrap.firstChild) {
+			textWrap.removeChild(textWrap.firstChild);
+		}
+		(previousIcon || id >= configIcons.length)?id:id++;
+		updatePopupid();
+	}
+
+	function nextIcon(previousIcon){
+		if(previousIcon) {
+			if(id>1){
+				id--;
+				var object =  configIcons[id-1];
+			}
+ 
+		}else{
+			var object =  configIcons[id];
+		}
+		if(object)  fitCameraToObject(camera, object, 2, controls, callback2,previousIcon);
+	}
+ 
+	function fitCameraToObject(camera, object, offset, controls,callback,previousIcon) {
 		
 		offset = offset || 1.25;
-        console.log(controls.target);
 		var boundingBox = new THREE.Box3();
         if(!object) {
 			new TWEEN.Tween( controls.target)
@@ -61,20 +111,28 @@
 			  })
 			.start();   
 
+            if(!object.userdata){
+				object.userdata ={};
+				object.userdata.cameraPosition = object.cameraPosition;
+			}
 			new TWEEN.Tween( controls.object.position)
 			.to( { x:object.userdata.cameraPosition.x,  y: object.userdata.cameraPosition.y, z: object.userdata.cameraPosition.z }, 1000 )
 			.onUpdate(function(){
 			//camera.position.set(this.x, this.y, this.z);
-			camera.lookAt(object.position);
+				camera.lookAt(object.position);
 			})
 			.easing( TWEEN.Easing.Linear.None)
 			.onComplete(function () {
 			//controls.target.copy(object.position);
 			camera.lookAt(object.position);
-			setTimeout(function(){callback(); },300);
+			if(previousIcon){
+				setTimeout(function(){callback(previousIcon); },300);
+			}
+			else{
+				setTimeout(function(){callback(); },300);
+			}
 				})
 			.start();   
-	 
 		}
 	 
 	}
@@ -156,6 +214,7 @@
  
 		 
 	}
+ 
 	init();
 	animate();
     
@@ -435,7 +494,7 @@
 				document.getElementsByTagName("body")[0].style.cursor = "pointer";
 				
 				var proj = toScreenPosition(INTERSECTED, camera);
-
+  
 				var tooltipWrap = document.getElementById("tooltip"); //get div
 				tooltipWrap.style.display = "block";
 

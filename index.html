@@ -206,9 +206,37 @@
     border-right: 10px solid transparent;
     border-top: 10px solid #646464;
     position:absolute;
-    bottom:-5px;
-    left:5px;
-  }*/
+		bottom:-5px;
+		left:5px;
+	  }*/
+	a {
+		text-decoration: none;
+		display: inline-block;
+		padding: 5px 10px;
+	}
+	a:hover {
+    background-color: #ddd;
+    color: black;
+}
+	.buttonNext:hover {
+		background-color: #ddd;
+		color: black;
+	}
+    .previous {
+		background-color: transparent;
+		color: white;
+		float:left;
+	}
+	.next {
+		background-color: transparent;
+		color: white;
+		float:right;
+	}
+
+	.round {
+		border-radius: 50%;
+	}
+	
     </style>
 </head>
 
@@ -222,7 +250,11 @@
     <script src="src/tween.min.js"></script>
     <script src="src/config.js"></script>
     <script src="src/script.js"></script>
- 
+ 	<div class ="buttonNext" style=" text-align:center; position: absolute; z-index: 10000;bottom:50px;  left: 0; right: 0; margin-left: auto;  margin-right: auto;width: 220px; background:rgba(55, 51, 51, 0.49);height:30px;border-radius: 15px; ">
+		<a href="#" onclick='nextIcon(true)' class="previous round">&#8249;</a>
+		<a href="#" onclick='nextIcon()'class="next round">&#8250;</a>
+		<div id="popupid" style="text-align:center;line-height:30px;color:white;" >1</div>
+	</div>
 </body>
 
 </html>
